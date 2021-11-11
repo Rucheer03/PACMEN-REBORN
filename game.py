@@ -29,6 +29,9 @@ class Game(object):
         # Create the player
         self.player = Player(32,128,"player.png")
         # Create the blocks that will set the paths where the player can go
+        self.blocks =[]
+        for i in range(0, 16):
+            self.blocks.append(pygame.sprite.Group())
         self.horizontal_blocks = pygame.sprite.Group()
         self.vertical_blocks = pygame.sprite.Group()
         # Create a group for the dots on the screen
@@ -36,6 +39,8 @@ class Game(object):
         # Set the enviroment:
         for i,row in enumerate(enviroment()):
             for j,item in enumerate(row):
+                if item >= 0 and item <=15:
+                    self.blocks[item].add(Block(j*32+8,i*32+8,BLACK,16,16))
                 if item == 1:
                     self.horizontal_blocks.add(Block(j*32+8,i*32+8,BLACK,16,16))
                 elif item == 2:
@@ -53,7 +58,7 @@ class Game(object):
         # Add the dots inside the game
         for i, row in enumerate(enviroment()):
             for j, item in enumerate(row):
-                if item != 0:
+                if item != 0 and item != 16 and item != 17:
                     self.dots_group.add(Ellipse(j*32+12,i*32+12,WHITE,8,8))
 
         # Load the sound effects
@@ -114,7 +119,7 @@ class Game(object):
 
     def run_logic(self):
         if not self.game_over:
-            self.player.update(self.horizontal_blocks,self.vertical_blocks)
+            self.player.update(self.horizontal_blocks,self.vertical_blocks,self.blocks)
             block_hit_list = pygame.sprite.spritecollide(self.player,self.dots_group,True)
             # When the block_hit_list contains one sprite that means that player hit a dot
             if len(block_hit_list) > 0:
@@ -126,7 +131,7 @@ class Game(object):
                 self.player.explosion = True
                 self.game_over_sound.play()
             self.game_over = self.player.game_over
-            self.enemies.update(self.horizontal_blocks,self.vertical_blocks)
+            self.enemies.update(self.horizontal_blocks,self.vertical_blocks,self.blocks)
            # tkMessageBox.showinfo("GAME OVER!","Final Score = "+(str)(GAME.score))    
 
     def display_frame(self,screen):
@@ -145,6 +150,8 @@ class Game(object):
                 self.menu.display_frame(screen)
         else:
             # --- Draw the game here ---
+            for i in range(1,15):
+                self.blocks[i].draw(screen)
             self.horizontal_blocks.draw(screen)
             self.vertical_blocks.draw(screen)
             draw_enviroment(screen)

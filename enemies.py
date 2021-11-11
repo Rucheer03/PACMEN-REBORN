@@ -49,7 +49,7 @@ class Slime(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
 
-    def update(self, horizontal_blocks, vertical_blocks):
+    def update(self, horizontal_blocks, vertical_blocks, blocks):
         self.rect.x += self.change_x
         self.rect.y += self.change_y
         if self.rect.right < 0:
@@ -107,6 +107,10 @@ def enviroment():
                     l.append(14)
                 elif c == 'F':
                     l.append(15)
+                elif c == 'P': #player
+                    l.append(16)
+                elif c == 'G': #ghost
+                    l.append(17)
                 else:
                     l.append(int(c))
         world.append(tuple(l))

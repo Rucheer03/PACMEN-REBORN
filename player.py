@@ -33,7 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.player_image = pygame.image.load(filename).convert()
         self.player_image.set_colorkey(BLACK)
 
-    def update(self,horizontal_blocks,vertical_blocks):
+    def update(self,horizontal_blocks,vertical_blocks,blocks):
         if not self.explosion:
             if self.rect.right < 0:
                 self.rect.left = SCREEN_WIDTH
@@ -47,6 +47,19 @@ class Player(pygame.sprite.Sprite):
             self.rect.y += self.change_y
 
             # This will stop the user for go up or down when it is inside of the box
+            for block in pygame.sprite.spritecollide(self,blocks[0],False):
+                flag=False
+                for i in range(1,16):
+                    for tmp in pygame.sprite.spritecollide(self,blocks[i],False):
+                        tmp_block = tmp
+                        flag = True
+                        break
+                    if flag:
+                        self.rect.centery = tmp_block.rect.centery
+                        self.rect.centerx = tmp_block.rect.centerx
+                        self.change_x = 0
+                        self.change_y = 0
+                        break
 
             for block in pygame.sprite.spritecollide(self,horizontal_blocks,False):
                 self.rect.centery = block.rect.centery
