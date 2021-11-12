@@ -47,14 +47,9 @@ class Game(object):
                     self.vertical_blocks.add(Block(j*32+8,i*32+8,BLACK,16,16))
         # Create the enemies
         self.enemies = pygame.sprite.Group()
-        self.enemies.add(Slime(288,96,0,2))
-        self.enemies.add(Slime(288,320,0,-2))
-        self.enemies.add(Slime(544,128,0,2))
-        self.enemies.add(Slime(32,224,0,2))
-        self.enemies.add(Slime(160,64,2,0))
-        self.enemies.add(Slime(448,64,-2,0))
-        self.enemies.add(Slime(640,448,2,0))
-        self.enemies.add(Slime(448,320,2,0))
+        self.enemies.add(Slime(256,288,1,0))
+        self.enemies.add(Slime(288,288,0,-1))
+        self.enemies.add(Slime(320,288,-1,0))
         # Add the dots inside the game
         for i, row in enumerate(enviroment()):
             for j, item in enumerate(row):
@@ -97,7 +92,7 @@ class Game(object):
 
                 elif event.key == pygame.K_DOWN:
                     self.player.move_down()
-                
+
                 elif event.key == pygame.K_ESCAPE:
                     self.game_over = True
                     self.about = False
@@ -114,7 +109,7 @@ class Game(object):
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 self.player.explosion = True
-                    
+
         return False
 
     def run_logic(self):
@@ -132,7 +127,7 @@ class Game(object):
                 self.game_over_sound.play()
             self.game_over = self.player.game_over
             self.enemies.update(self.horizontal_blocks,self.vertical_blocks,self.blocks)
-           # tkMessageBox.showinfo("GAME OVER!","Final Score = "+(str)(GAME.score))    
+           # tkMessageBox.showinfo("GAME OVER!","Final Score = "+(str)(GAME.score))
 
     def display_frame(self,screen):
         # First, clear the screen to white. Don't put other drawing commands
@@ -158,13 +153,9 @@ class Game(object):
             self.dots_group.draw(screen)
             self.enemies.draw(screen)
             screen.blit(self.player.image,self.player.rect)
-            #text=self.font.render("Score: "+(str)(self.score), 1,self.RED)
-            #screen.blit(text, (30, 650))
-            # Render the text for the score
-            text = self.font.render("Score: " + str(self.score),True,GREEN)
-            # Put the text on the screen
-            screen.blit(text,[120,20])
-            
+            text=self.font.render("Score: "+(str)(self.score), 1,RED)
+            screen.blit(text, (30, 650))
+
         # --- Go ahead and update the screen with what we've drawn.
         pygame.display.flip()
 
@@ -187,24 +178,24 @@ class Menu(object):
         self.select_color = select_color
         self.items = items
         self.font = pygame.font.Font(ttf_font,font_size)
-        
+
     def display_frame(self,screen):
         for index, item in enumerate(self.items):
             if self.state == index:
                 label = self.font.render(item,True,self.select_color)
             else:
                 label = self.font.render(item,True,self.font_color)
-            
+
             width = label.get_width()
             height = label.get_height()
-            
+
             posX = (SCREEN_WIDTH /2) - (width /2)
             # t_h: total height of text block
             t_h = len(self.items) * height
             posY = (SCREEN_HEIGHT /2) - (t_h /2) + (index * height)
-            
+
             screen.blit(label,(posX,posY))
-        
+
     def event_handler(self,event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:

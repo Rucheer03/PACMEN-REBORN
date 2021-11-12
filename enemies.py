@@ -48,6 +48,7 @@ class Slime(pygame.sprite.Sprite):
         self.image = pygame.image.load("slime.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
+        self.direction = "null"
 
     def update(self, horizontal_blocks, vertical_blocks, blocks):
         self.rect.x += self.change_x
@@ -61,29 +62,76 @@ class Slime(pygame.sprite.Sprite):
         elif self.rect.top > SCREEN_HEIGHT:
             self.rect.bottom = 0
 
-        if self.rect.topleft in self.get_intersection_position():
-            direction = random.choice(("left", "right", "up", "down"))
-            if direction == "left" and self.change_x == 0:
-                self.change_x = -2
-                self.change_y = 0
-            elif direction == "right" and self.change_x == 0:
-                self.change_x = 2
-                self.change_y = 0
-            elif direction == "up" and self.change_y == 0:
-                self.change_x = 0
-                self.change_y = -2
-            elif direction == "down" and self.change_y == 0:
-                self.change_x = 0
-                self.change_y = 2
+        for block in pygame.sprite.spritecollide(self,blocks[0],False):
+            flag=False
+            for i in range(1,16):
+                for tmp in pygame.sprite.spritecollide(self,blocks[i],False):
+                    tmp_block = tmp
+                    block_index = i
+                    flag = True
+                    break
+                if flag:
+                    self.rect.centery = tmp_block.rect.centery
+                    self.rect.centerx = tmp_block.rect.centerx
+                    self.change_x = 0
+                    self.change_y = 0
+                    break
 
-    def get_intersection_position(self):
-        items = []
-        for i, row in enumerate(enviroment()):
-            for j, item in enumerate(row):
-                if item == 15:
-                    items.append((j * 32, i * 32))
+        for index in range(3,16):
+            items = []
+            for i, row in enumerate(enviroment()):
+                for j, item in enumerate(row):
+                    if item == index:
+                        items.append((j * 32, i * 32))
+            if self.rect.topleft in items:
+                self.direction = self.get_direction(index)
+                if self.direction == "left" and self.change_x == 0:
+                    self.change_x = -2
+                    self.change_y = 0
+                elif self.direction == "right" and self.change_x == 0:
+                    self.change_x = 2
+                    self.change_y = 0
+                elif self.direction == "up" and self.change_y == 0:
+                    self.change_x = 0
+                    self.change_y = -2
+                elif self.direction == "down" and self.change_y == 0:
+                    self.change_x = 0
+                    self.change_y = 2
 
-        return items
+
+    def get_direction(self,index_of_item):
+        if index_of_item == 3:
+            l = ["right", "down"]
+        elif index_of_item == 4:
+            l=["left", "down"]
+        elif index_of_item == 5:
+            l=["left", "up"]
+        elif index_of_item == 6:
+            l=["right", "up"]
+        elif index_of_item == 7:
+            l=["left", "down", "right"]
+        elif index_of_item == 8:
+            l=["left", "up", "down"]
+        elif index_of_item == 9:
+            l=["right", "up", "left"]
+        elif index_of_item == 10:
+            l=["right", "up", "down"]
+        elif index_of_item == 11:
+            return "down"
+        elif index_of_item == 12:
+            return "left"
+        elif index_of_item == 13:
+            return "up"
+        elif index_of_item == 14:
+            return "right"
+        elif index_of_item == 15:
+            l=["left", "right", "up", "down"]
+        try:
+            l.remove(self.direction)
+        finally:
+            return random.choice(l)
+
+
 
 
 def enviroment():
