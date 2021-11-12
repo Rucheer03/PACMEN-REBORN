@@ -1,8 +1,8 @@
 import pygame
 import random
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 576
+SCREEN_WIDTH = 608
+SCREEN_HEIGHT = 672
 
 # Define some colors
 BLACK = (0, 0, 0)

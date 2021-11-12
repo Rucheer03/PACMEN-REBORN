@@ -6,8 +6,8 @@ from player import Player
 from enemies import *
 import tkinter
 from tkinter import messagebox
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 576
+SCREEN_WIDTH = 608
+SCREEN_HEIGHT = 672
 
 # Define some colors
 BLACK = (0,0,0)
