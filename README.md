@@ -153,7 +153,27 @@ This is the core game loop file, handling initialization, rendering, input, and 
 * Player and enemy positions are updated, and their `pygame.Rect` objects are used for collision detection against wall `Rect`s and collectible positions.
 
 ---
-## 2. `player.py`
+### 2. ⁠ game.py ⁠
+
+This file handles maze management (loading, parsing) and rendering.
+
+#### Functions & Data Structures:
+
+ 1) ⁠ __init__ ⁠:initializes the game with default values, including setting up the menu, the player, blocks, enemies, and sound effects.
+
+2)⁠ process_events() ⁠:Handles user input (key presses, mouse events) and updates the game state accordingly
+
+3)⁠ run_logic() ⁠:Updates the game logic, such as player movements, collisions, score updates, and game over checks.
+
+4)⁠ display_frame() ⁠:Renders the game scene to the screen, including the menu, game objects, score, and other UI elements
+
+5)⁠ display_message(self, screen, message, color) ⁠:
+Displays a message on the screen (e.g., during the "About" screen or when the game is over).
+
+6)`Menu `:This class represents the game menu, allowing the player to navigate between options like "Start", "About", and "Exit."
+
+---
+## 3. `player.py`
 
 **Class: `Player`**
 
@@ -181,7 +201,7 @@ Encapsulates the player’s state and movement logic.
 * `list` (of wall `pygame.Rect`s): Used by `move()` and `check_collision()` to validate movement paths.
 
 ---
-## 3. `enemies.py`
+## 4. `enemies.py`
 
 **Class: `Enemy`**
 
@@ -207,22 +227,7 @@ Manages AI or random movement for ghosts/enemies.
 * `pygame.Rect`: Represents the enemy's collision hitbox.
 * `list` (of wall `pygame.Rect`s): Used for collision detection to constrain enemy movement.
 
----
-## 4. `game.py`
 
-
-This file handles maze management (loading, parsing) and rendering.
-
-### Functions & Data Structures:
-
-* **`load_maze(filename)`**
-    * **Returns**: A 2D `list` (list of lists) of characters (`#`, `.`, or space).
-    * **How**: Reads the specified text file line by line. Each line becomes a row (a `list` of characters) in the main 2D `list`, effectively forming the game grid.
-* **`draw_maze(screen, maze)`**
-    * **Usage**: Iterates through the 2D `maze` grid (`list` of `list`s). For each cell containing a wall character (`#`), it draws a corresponding rectangle on the `screen`.
-* **`get_collectibles(maze)`**
-    * **Returns**: A `list` of `tuple`s.
-    * **How**: Scans the 2D `maze` grid. Whenever it finds a collectible character (`.`), it calculates its `(x, y)` position in the game world and adds this `tuple` to the `list` which is then returned.
 
 ---
 ## Improvements and Features to be added
