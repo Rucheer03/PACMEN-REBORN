@@ -143,8 +143,7 @@ This is the core game loop file, handling initialization, rendering, input, and 
 * **`pygame.Rect`**:
     * Player and enemy hitboxes.
     * Used for detecting wall and collectible collisions.
-* **`bool`**:
-    * Game state tracking (e.g., `running`, win/lose conditions).
+
 
 
 ### Where & How They're Used:
